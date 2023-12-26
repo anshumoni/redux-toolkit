@@ -1,24 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import React,{useState,useEffect} from 'react'
+import Navbar from './components/Navbar';
+import Product from './components/Product';
+import { BrowserRouter,Route,Routes} from "react-router-dom";
 
 function App() {
+  const [category,setcategory] =useState([]);
+  const getCategory =async ()=>{
+     let fetchcat = await fetch('https://dummyjson.com/products/categories');
+     let parsedata = await fetchcat.json();
+     setcategory(parsedata.splice(0,7));
+     
+  }
+
+  useEffect(()=>{
+     getCategory();
+ },[]);
+
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <>
+    <div className='container'>
+    <BrowserRouter>
+      <Navbar/>
+      <h1 className='text-center'>Ganpati Goods</h1>
+      <Routes>
+      {category.map((element)=>{
+        return (<Route key={element} path={`/${element}`} element={<Product category={element}/>}> </Route>)
+      })}
+      </Routes>
+      </BrowserRouter> 
+     
     </div>
+    </>
   );
 }
 
