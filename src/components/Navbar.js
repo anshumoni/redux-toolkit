@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Minicart from './Minicart';
 
 const Navbar = (props) => {
+  let location = useLocation();
     const [category,setcategory] =useState([]);
      const getCategory =async ()=>{
         let fetchcat = await fetch('https://dummyjson.com/products/categories');
@@ -13,7 +14,7 @@ const Navbar = (props) => {
 
      useEffect(()=>{
         getCategory();
-    },[]);
+    },[location]);
   
   const capitalize=(word)=>{
       let wordlower = word.toLowerCase();
@@ -21,7 +22,7 @@ const Navbar = (props) => {
   } 
   return (
     <>
-<nav className="navbar bg-dark navbar-expand-lg bg-body-tertiary">
+<nav className="navbar navbar-expand-lg navbar-dark bg-dark">
   <div className="container-fluid">
     <Link className="navbar-brand" to="/">Ganapati goods</Link>
     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,7 +32,7 @@ const Navbar = (props) => {
       <ul className="navbar-nav me-auto mb-2 mb-lg-0">
         {category.map((element)=>
              (<li className="nav-item" key={element}>
-              <Link className="nav-link active" aria-current="page" to={element}>{capitalize(element)}</Link>
+              <Link className={`nav-link ${location.pathname}==='/'${element}?"active":""`} aria-current="page" to={element}>{capitalize(element)}</Link>
           </li>))
         }
         
@@ -40,7 +41,7 @@ const Navbar = (props) => {
         <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
         <button className="btn btn-outline-success" type="submit">Search</button>
       </form>
-      <Minicart/>
+      <Minicart user={props.user}/>
     </div>
   </div>
 </nav>

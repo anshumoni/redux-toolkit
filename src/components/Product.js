@@ -9,16 +9,17 @@ const Product = (props) => {
     const getstore = useSelector(state=>state.cart);
     const [products,setproducts] =useState([]);
 
-   const getProduct =async ()=>{
-    let fetchproducts = await fetch(`https://dummyjson.com/products/category/${props.category}/?limit=12`);
+   const getProduct =async ()=>{ console.log('cat',props.category);
+    let fetchproducts = await fetch(`https://dummyjson.com/products/category/${props.category}`);
     console.log(`https://dummyjson.com/products/category/${props.category}/?limit=12`);
     let parsedata = await fetchproducts.json();
     console.log("data",parsedata);
     setproducts(parsedata.products)
   }
   useEffect(()=>{
+    console.log("prod");
     getProduct();
-  },[])
+  },[props.category]);
 
    const addToCartHandler=(product)=>{
        dispatch(addtocart(product))

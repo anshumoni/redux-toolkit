@@ -7,7 +7,6 @@ import { createSlice} from "@reduxjs/toolkit";
     initialState,
     reducers:{
         addtocart(state,action){
-            console.log("state",action.payload)
              state.push(action.payload);
         },
         removefromcart(state,action){
